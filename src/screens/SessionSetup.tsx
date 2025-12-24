@@ -69,6 +69,7 @@ export function SessionSetup() {
   const { session, loading } = useSession(sessionId);
 
   const [defaults, setDefaults] = useState<SessionDefaults | null>(null);
+  const [chemistryExpanded, setChemistryExpanded] = useState(true);
 
   useEffect(() => {
     if (session) setDefaults(session.defaults);
@@ -136,13 +137,21 @@ export function SessionSetup() {
           <Select label="Surface" value={defaults.paper.surface} onChange={(e) => setDefaults({ ...defaults, paper: { ...defaults.paper, surface: e.target.value } })} options={SURFACES.map((s) => ({ value: s, label: s }))} />
         </div>
 
-        <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
+        <button
+          onClick={() => setChemistryExpanded(!chemistryExpanded)}
+          className="w-full text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border bg-transparent border-none cursor-pointer hover:text-text-primary transition-colors"
+        >
+          <span className="text-lg leading-none">{chemistryExpanded ? '▼' : '▶'}</span>
           Chemistry Sequence
-        </div>
-        {defaults.processing.steps.map((step, i) => (
-          <ChemistryStepEditor key={i} step={step} index={i} onUpdate={(s) => updateStep(i, s)} onRemove={() => removeStep(i)} />
-        ))}
-        <Button variant="secondary" onClick={addStep}>+ Add Step</Button>
+        </button>
+        {chemistryExpanded && (
+          <>
+            {defaults.processing.steps.map((step, i) => (
+              <ChemistryStepEditor key={i} step={step} index={i} onUpdate={(s) => updateStep(i, s)} onRemove={() => removeStep(i)} />
+            ))}
+            <Button variant="secondary" onClick={addStep}>+ Add Step</Button>
+          </>
+        )}
 
         <div className="mb-4 mt-4">
           <Input label="Temperature (°C)" type="number" value={defaults.processing.temperature ?? ''} onChange={(e) => setDefaults({ ...defaults, processing: { ...defaults.processing, temperature: e.target.value ? parseInt(e.target.value) : null } })} />
