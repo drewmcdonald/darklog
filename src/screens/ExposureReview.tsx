@@ -34,21 +34,18 @@ export function ExposureReview() {
         leftAction={<BackButton onClick={() => goToPrintEditor(sessionId, printId)} />}
       />
       <SessionContext sessionId={sessionId} />
-      <div className="flex-1 flex flex-col justify-center items-center p-6">
+      <div className="flex-1 flex flex-col justify-center items-center p-4">
         <div className="w-full max-w-[400px]">
-          <div className="text-center mb-8">
-            <div className="text-sm text-text-muted uppercase tracking-wider mb-2">
+          <div className="text-center mb-6">
+            <div className="text-sm text-text-muted uppercase tracking-wider">
               {print.rollId} • Frame {print.frameNumber}
-            </div>
-            <div className="text-lg text-text-secondary mb-1">
-              Ready to expose
             </div>
           </div>
 
-          <div className="bg-bg-elevated border border-border rounded-lg p-6 mb-8">
-            <div className="grid grid-cols-3 gap-6">
+          <div className="bg-bg-elevated border border-border rounded-lg p-4 mb-6">
+            <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-xs text-text-muted uppercase tracking-wide mb-2">
+                <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
                   Aperture
                 </div>
                 <div className="text-3xl font-bold text-text-primary">
@@ -57,7 +54,7 @@ export function ExposureReview() {
               </div>
 
               <div className="text-center">
-                <div className="text-xs text-text-muted uppercase tracking-wide mb-2">
+                <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
                   Time
                 </div>
                 <div className="text-3xl font-bold text-text-primary">
@@ -66,7 +63,7 @@ export function ExposureReview() {
               </div>
 
               <div className="text-center">
-                <div className="text-xs text-text-muted uppercase tracking-wide mb-2">
+                <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
                   Contrast
                 </div>
                 <div className="text-3xl font-bold text-text-primary">
@@ -76,7 +73,7 @@ export function ExposureReview() {
             </div>
 
             {print.exposure.enlargerHeight && (
-              <div className="mt-6 pt-6 border-t border-border text-center">
+              <div className="mt-4 pt-4 border-t border-border text-center">
                 <div className="text-xs text-text-muted uppercase tracking-wide mb-1">
                   Enlarger Height
                 </div>

@@ -272,7 +272,7 @@ export function PrintEditor() {
         )}
       </div>
       <div className="p-4 border-t border-border">
-        <Button onClick={handleStartTimer}>START TIMER</Button>
+        <Button onClick={handleStartTimer}>REVIEW EXPOSURE</Button>
       </div>
     </div>
   );
