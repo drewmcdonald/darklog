@@ -129,13 +129,15 @@ export function useTimer({
 
   // Interval management
   useEffect(() => {
+    // Always clear existing interval first to prevent multiple overlapping intervals
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    // Then create new interval if needed
     if (state.status === 'running' || state.status === 'transferring') {
       intervalRef.current = window.setInterval(tick, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
     }
 
     return () => {
