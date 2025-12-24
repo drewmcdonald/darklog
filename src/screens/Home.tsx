@@ -46,7 +46,7 @@ function SessionCard({
 }
 
 export function Home() {
-  const { goToSettings, goToSessionSetup, goToPrintEditor, setSession } = useApp();
+  const { goToSettings, goToHistory, goToSessionSetup, goToPrintEditor, setSession } = useApp();
   const { sessions, loading } = useSessions();
   const [todaysSession, setTodaysSession] = useState<Session | null>(null);
 
@@ -80,6 +80,7 @@ export function Home() {
       <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
         <Header
           title="DarkLog"
+          leftAction={<IconButton icon="📚" label="History" onClick={goToHistory} />}
           rightAction={<IconButton icon="⚙" label="Settings" onClick={goToSettings} />}
         />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
@@ -91,6 +92,7 @@ export function Home() {
     <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
       <Header
         title="DarkLog"
+        leftAction={<IconButton icon="📚" label="History" onClick={goToHistory} />}
         rightAction={<IconButton icon="⚙" label="Settings" onClick={goToSettings} />}
       />
       <div className="flex-1 p-4 overflow-y-auto">
