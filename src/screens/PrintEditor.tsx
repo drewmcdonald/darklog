@@ -100,10 +100,34 @@ export function PrintEditor() {
 
   const selectStrip = (stripId: string, selected: number) => {
     if (!print) return;
+
+    // Find the strip being modified
+    const strip = (print.testStrips ?? []).find(s => s.id === stripId);
+    if (!strip) return;
+
+    // Toggle selection
+    const isDeselecting = strip.selectedStrip === selected;
+    const newSelection = isDeselecting ? null : selected;
+
+    // Update test strips array
     const strips = (print.testStrips ?? []).map((s) =>
-      s.id === stripId ? { ...s, selectedStrip: s.selectedStrip === selected ? null : selected } : s
+      s.id === stripId ? { ...s, selectedStrip: newSelection } : s
     );
-    setPrintState({ ...print, testStrips: strips });
+
+    // If selecting (not deselecting), calculate and set the exposure time
+    if (!isDeselecting) {
+      const calculatedTime = strip.baseTime + (selected - 1) * strip.interval;
+      setPrintState({
+        ...print,
+        testStrips: strips,
+        exposure: {
+          ...print.exposure!,
+          baseTime: calculatedTime
+        }
+      });
+    } else {
+      setPrintState({ ...print, testStrips: strips });
+    }
   };
 
   if (!session || !print) {
