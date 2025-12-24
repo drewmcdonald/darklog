@@ -11,6 +11,7 @@ function SessionHistoryCard({
   session: Session;
   onDelete: () => void;
 }) {
+  const { goToPrintEditor } = useApp();
   const { prints, refresh } = useSessionPrints(session.id);
 
   const handleDeleteSession = async () => {
@@ -71,10 +72,13 @@ function SessionHistoryCard({
         <div className="mt-3 pt-3 border-t border-border">
           {prints.slice(0, 5).map((p) => (
             <div key={p.id} className="text-text-secondary text-sm mb-1 flex justify-between items-center group">
-              <span>
+              <button
+                onClick={() => goToPrintEditor(session.id, p.id)}
+                className="flex-1 text-left hover:text-text-primary transition-colors cursor-pointer"
+              >
                 {p.rollId} #{p.frameNumber} &middot; f/{p.exposure.aperture} &middot; {p.exposure.baseTime}s
                 {p.rating && ` · ${'★'.repeat(p.rating)}`}
-              </span>
+              </button>
               <button
                 onClick={() => handleDeletePrint(p)}
                 className="text-text-muted hover:text-text-primary transition-colors px-2 opacity-0 group-hover:opacity-100"
