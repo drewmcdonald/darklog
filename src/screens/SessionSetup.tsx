@@ -23,7 +23,7 @@ function ChemistryStepEditor({
     <Card padding="compact" className="mb-4">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex justify-between items-center mb-2 bg-transparent border-none cursor-pointer text-left p-0"
+        className="w-full flex justify-between items-center mb-2 bg-transparent border-none cursor-pointer text-left py-1 px-0"
       >
         <div className="flex items-center gap-2">
           <span className="text-lg leading-none text-text-secondary">{isExpanded ? '▼' : '▶'}</span>
