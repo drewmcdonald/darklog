@@ -17,48 +17,65 @@ function ChemistryStepEditor({
   onUpdate: (step: ProcessingStep) => void;
   onRemove: () => void;
 }) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
     <Card padding="compact" className="mb-4">
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-text-secondary">Step {index + 1}</span>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex justify-between items-center mb-2 bg-transparent border-none cursor-pointer text-left p-0"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-lg leading-none text-text-secondary">{isExpanded ? '▼' : '▶'}</span>
+          <span className="text-text-secondary">
+            Step {index + 1}{step.chemical && `: ${step.chemical}`}
+          </span>
+        </div>
         <button
-          onClick={onRemove}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           className="bg-transparent border-none text-error cursor-pointer text-xl"
         >
           &times;
         </button>
-      </div>
-      <Input
-        label="Chemical"
-        value={step.chemical}
-        onChange={(e) => onUpdate({ ...step, chemical: e.target.value })}
-      />
-      <div className="flex gap-4 mt-2">
-        <Input
-          label="Dilution"
-          value={step.dilution}
-          onChange={(e) => onUpdate({ ...step, dilution: e.target.value })}
-          className="flex-1 min-w-0"
-        />
-        <Input
-          label="Duration"
-          value={formatSeconds(step.duration)}
-          onChange={(e) => {
-            const seconds = parseTimeInput(e.target.value);
-            if (seconds !== null) onUpdate({ ...step, duration: seconds });
-          }}
-          className="flex-1 min-w-0"
-        />
-      </div>
-      <div className="mt-2">
-        <Input
-          label="Agitation Interval (sec)"
-          type="number"
-          value={step.agitationInterval ?? ''}
-          onChange={(e) => onUpdate({ ...step, agitationInterval: e.target.value ? parseInt(e.target.value) : null })}
-          placeholder="e.g. 30 (empty = continuous)"
-        />
-      </div>
+      </button>
+      {isExpanded && (
+        <>
+          <Input
+            label="Chemical"
+            value={step.chemical}
+            onChange={(e) => onUpdate({ ...step, chemical: e.target.value })}
+          />
+          <div className="flex gap-4 mt-2">
+            <Input
+              label="Dilution"
+              value={step.dilution}
+              onChange={(e) => onUpdate({ ...step, dilution: e.target.value })}
+              className="flex-1 min-w-0"
+            />
+            <Input
+              label="Duration"
+              value={formatSeconds(step.duration)}
+              onChange={(e) => {
+                const seconds = parseTimeInput(e.target.value);
+                if (seconds !== null) onUpdate({ ...step, duration: seconds });
+              }}
+              className="flex-1 min-w-0"
+            />
+          </div>
+          <div className="mt-2">
+            <Input
+              label="Agitation Interval (sec)"
+              type="number"
+              value={step.agitationInterval ?? ''}
+              onChange={(e) => onUpdate({ ...step, agitationInterval: e.target.value ? parseInt(e.target.value) : null })}
+              placeholder="e.g. 30 (empty = continuous)"
+            />
+          </div>
+        </>
+      )}
     </Card>
   );
 }
@@ -69,7 +86,6 @@ export function SessionSetup() {
   const { session, loading } = useSession(sessionId);
 
   const [defaults, setDefaults] = useState<SessionDefaults | null>(null);
-  const [chemistryExpanded, setChemistryExpanded] = useState(true);
 
   useEffect(() => {
     if (session) setDefaults(session.defaults);
@@ -137,21 +153,13 @@ export function SessionSetup() {
           <Select label="Surface" value={defaults.paper.surface} onChange={(e) => setDefaults({ ...defaults, paper: { ...defaults.paper, surface: e.target.value } })} options={SURFACES.map((s) => ({ value: s, label: s }))} />
         </div>
 
-        <button
-          onClick={() => setChemistryExpanded(!chemistryExpanded)}
-          className="w-full text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border bg-transparent border-none cursor-pointer hover:text-text-primary transition-colors"
-        >
-          <span className="text-lg leading-none">{chemistryExpanded ? '▼' : '▶'}</span>
+        <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Chemistry Sequence
-        </button>
-        {chemistryExpanded && (
-          <>
-            {defaults.processing.steps.map((step, i) => (
-              <ChemistryStepEditor key={i} step={step} index={i} onUpdate={(s) => updateStep(i, s)} onRemove={() => removeStep(i)} />
-            ))}
-            <Button variant="secondary" onClick={addStep}>+ Add Step</Button>
-          </>
-        )}
+        </div>
+        {defaults.processing.steps.map((step, i) => (
+          <ChemistryStepEditor key={i} step={step} index={i} onUpdate={(s) => updateStep(i, s)} onRemove={() => removeStep(i)} />
+        ))}
+        <Button variant="secondary" onClick={addStep}>+ Add Step</Button>
 
         <div className="mb-4 mt-4">
           <Input label="Temperature (°C)" type="number" value={defaults.processing.temperature ?? ''} onChange={(e) => setDefaults({ ...defaults, processing: { ...defaults.processing, temperature: e.target.value ? parseInt(e.target.value) : null } })} />
