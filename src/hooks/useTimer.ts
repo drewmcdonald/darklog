@@ -42,6 +42,19 @@ export function useTimer({
 
   const totalDuration = steps.reduce((sum, step) => sum + step.duration, 0);
 
+  // Reset timer state when steps change and timer is idle
+  useEffect(() => {
+    if (state.status === 'idle') {
+      setState({
+        status: 'idle',
+        currentStepIndex: 0,
+        remainingTime: steps[0]?.duration ?? 0,
+        nextAgitationIn: steps[0]?.agitationInterval ?? null,
+        totalElapsed: 0,
+      });
+    }
+  }, [steps, state.status]);
+
   const tick = useCallback(() => {
     setState((prev) => {
       if (prev.status !== 'running' && prev.status !== 'transferring') {
@@ -129,13 +142,15 @@ export function useTimer({
 
   // Interval management
   useEffect(() => {
+    // Always clear existing interval first to prevent multiple overlapping intervals
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    // Then create new interval if needed
     if (state.status === 'running' || state.status === 'transferring') {
       intervalRef.current = window.setInterval(tick, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
     }
 
     return () => {
