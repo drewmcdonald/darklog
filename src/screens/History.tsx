@@ -106,7 +106,7 @@ export function History() {
   if (loading) {
     return (
       <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
-        <Header title="HISTORY" leftAction={<BackButton onClick={goHome} />} />
+        <Header title="Print History" leftAction={<BackButton onClick={goHome} />} />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
     );
@@ -114,7 +114,7 @@ export function History() {
 
   return (
     <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
-      <Header title="HISTORY" leftAction={<BackButton onClick={goHome} />} />
+      <Header title="Print History" leftAction={<BackButton onClick={goHome} />} />
       <div className="flex-1 p-4 overflow-y-auto">
         {sessions.length === 0 ? (
           <div className="text-center text-text-muted">No sessions yet</div>
