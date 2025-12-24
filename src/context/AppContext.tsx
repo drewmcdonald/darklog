@@ -46,6 +46,7 @@ interface AppContextValue {
   goHome: () => void;
   goToSessionSetup: (sessionId?: string) => void;
   goToPrintEditor: (sessionId: string, printId?: string) => void;
+  goToExposureReview: (sessionId: string, printId: string) => void;
   goToTimer: (sessionId: string, printId: string) => void;
   goToNotes: (sessionId: string, printId: string) => void;
   goToSettings: () => void;
@@ -91,6 +92,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [navigate]
   );
 
+  const goToExposureReview = useCallback(
+    (sessionId: string, printId: string) => {
+      navigate({ name: 'exposureReview', sessionId, printId });
+    },
+    [navigate]
+  );
+
   const goToTimer = useCallback(
     (sessionId: string, printId: string) => {
       navigate({ name: 'timer', sessionId, printId });
@@ -122,6 +130,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     goHome,
     goToSessionSetup,
     goToPrintEditor,
+    goToExposureReview,
     goToTimer,
     goToNotes,
     goToSettings,
