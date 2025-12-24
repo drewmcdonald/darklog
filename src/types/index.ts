@@ -136,6 +136,7 @@ export type Screen =
   | { name: 'home' }
   | { name: 'sessionSetup'; sessionId?: string }
   | { name: 'printEditor'; sessionId: string; printId?: string }
+  | { name: 'exposureReview'; sessionId: string; printId: string }
   | { name: 'timer'; sessionId: string; printId: string }
   | { name: 'notes'; sessionId: string; printId: string }
   | { name: 'settings' }

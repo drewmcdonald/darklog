@@ -7,7 +7,7 @@ import type { PrintRecord, TestStrip, ContrastSetting } from '../types';
 import { generateId, timestamp } from '../utils/id';
 
 export function PrintEditor() {
-  const { state, goHome, goToTimer, setPrint } = useApp();
+  const { state, goHome, goToExposureReview, setPrint } = useApp();
   const screen = state.screen;
   const sessionId = screen.name === 'printEditor' ? screen.sessionId : '';
   const printId = screen.name === 'printEditor' ? screen.printId : undefined;
@@ -79,7 +79,7 @@ export function PrintEditor() {
 
     if (savedPrint) {
       setPrint(savedPrint);
-      goToTimer(sessionId, savedPrint.id);
+      goToExposureReview(sessionId, savedPrint.id);
     }
   };
 
@@ -272,7 +272,7 @@ export function PrintEditor() {
         )}
       </div>
       <div className="p-4 border-t border-border">
-        <Button onClick={handleStartTimer}>START TIMER</Button>
+        <Button onClick={handleStartTimer}>REVIEW EXPOSURE</Button>
       </div>
     </div>
   );
