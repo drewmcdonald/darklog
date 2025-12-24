@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { usePrint, updatePrint } from '../hooks';
-import { Header, Button, RatingPicker, Card } from '../components';
+import { Header, Button, RatingPicker, Card, SessionContext } from '../components';
 
 export function Notes() {
   const { state, goToPrintEditor, goHome } = useApp();
@@ -52,6 +52,7 @@ export function Notes() {
   return (
     <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
       <Header title="PRINT COMPLETE" />
+      <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">
         <Card className="mb-6">
           <div className="font-medium mb-1">
@@ -79,9 +80,19 @@ export function Notes() {
       </div>
 
       <div className="p-4 border-t border-border">
-        <div className="flex flex-col gap-2">
-          <Button onClick={handleReprint}>REPRINT</Button>
-          <Button variant="secondary" onClick={handleNewFrame}>NEW FRAME</Button>
+        <div className="flex flex-col gap-3">
+          <div>
+            <Button onClick={handleReprint}>REPRINT</Button>
+            <div className="text-xs text-text-muted text-center mt-1.5">
+              Same frame, adjust settings
+            </div>
+          </div>
+          <div>
+            <Button variant="secondary" onClick={handleNewFrame}>NEW FRAME</Button>
+            <div className="text-xs text-text-muted text-center mt-1.5">
+              Next negative, keep settings
+            </div>
+          </div>
           <Button variant="secondary" onClick={handleFinish}>FINISH SESSION</Button>
         </div>
       </div>
