@@ -6,3 +6,4 @@ export { TimerDisplay } from './TimerDisplay';
 export { ProgressBar } from './ProgressBar';
 export { RatingPicker } from './RatingPicker';
 export { Header, BackButton, IconButton } from './Header';
+export { SessionContext } from './SessionContext';

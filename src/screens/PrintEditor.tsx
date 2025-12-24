@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { useSession, usePrint, createPrint, updatePrint, useStickyValues } from '../hooks';
-import { Header, BackButton, Button, Input, Select, Card } from '../components';
+import { useSession, usePrint, createPrint, updatePrint, useStickyValues, useSessionPrints } from '../hooks';
+import { Header, BackButton, Button, Input, Select, Card, SessionContext } from '../components';
 import { PAPER_SIZES, APERTURES, CONTRAST_GRADES } from '../utils/defaults';
 import type { PrintRecord, TestStrip, ContrastSetting } from '../types';
 import { generateId, timestamp } from '../utils/id';
@@ -15,6 +15,7 @@ export function PrintEditor() {
   const { session } = useSession(sessionId);
   const { print: existingPrint } = usePrint(printId);
   const { sticky, update: updateSticky } = useStickyValues();
+  const { prints: sessionPrints } = useSessionPrints(sessionId);
 
   const [print, setPrintState] = useState<Partial<PrintRecord> | null>(null);
   const [showTestStripForm, setShowTestStripForm] = useState(false);
@@ -116,14 +117,37 @@ export function PrintEditor() {
 
   const contrastOptions = CONTRAST_GRADES.map((g) => ({ value: g.toString(), label: `MG ${g}` }));
 
+  // Get previous print for reference (exclude current print if editing)
+  const previousPrint = sessionPrints
+    .filter(p => p.id !== printId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+
   return (
     <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
       <Header title={printId ? 'EDIT PRINT' : 'NEW PRINT'} leftAction={<BackButton onClick={goHome} />} />
+      <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="flex gap-4 mb-4">
           <Input label="Roll" value={print.rollId ?? ''} onChange={(e) => setPrintState({ ...print, rollId: e.target.value })} placeholder="e.g. HP5 R12" className="flex-1 min-w-0" />
           <Input label="Frame" value={print.frameNumber ?? ''} onChange={(e) => setPrintState({ ...print, frameNumber: e.target.value })} placeholder="e.g. 24" className="flex-1 min-w-0" />
         </div>
+
+        {previousPrint && !printId && (
+          <Card padding="compact" className="mb-4 bg-bg-elevated">
+            <div className="text-xs text-text-muted mb-1.5 uppercase tracking-wide">Previous Print</div>
+            <div className="text-sm text-text-secondary">
+              {previousPrint.rollId} • Frame {previousPrint.frameNumber}
+            </div>
+            <div className="text-sm text-text-primary mt-1">
+              f/{previousPrint.exposure.aperture} • {previousPrint.exposure.baseTime}s • MG {previousPrint.paper.contrast.filterValue}
+            </div>
+            {previousPrint.rating && (
+              <div className="text-xs text-text-muted mt-1">
+                Rating: {'★'.repeat(previousPrint.rating)}{'☆'.repeat(5 - previousPrint.rating)}
+              </div>
+            )}
+          </Card>
+        )}
 
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Exposure
@@ -172,33 +196,40 @@ export function PrintEditor() {
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Test Strips ({print.testStrips?.length ?? 0})
         </div>
-        {(print.testStrips ?? []).map((strip) => (
-          <Card key={strip.id} padding="compact" className="mb-4">
-            <div className="text-text-secondary mb-2">
-              {strip.baseTime}s base &middot; {strip.interval}s interval &middot; {strip.stripCount} strips
-            </div>
-            <div className="flex gap-1 flex-wrap">
-              {Array.from({ length: strip.stripCount }, (_, i) => i + 1).map((n) => (
-                <button
-                  key={n}
-                  onClick={() => selectStrip(strip.id, n)}
-                  className={`w-9 h-9 rounded border cursor-pointer text-text-primary ${
-                    strip.selectedStrip === n
-                      ? 'border-2 border-success bg-success'
-                      : 'border-border bg-bg-elevated'
-                  }`}
-                >
-                  {n}
-                </button>
-              ))}
-            </div>
-            {strip.selectedStrip && (
-              <div className="text-text-secondary mt-2">
-                Selected: {strip.baseTime + (strip.selectedStrip - 1) * strip.interval}s
+        {(print.testStrips ?? []).map((strip) => {
+          const selectedTime = strip.selectedStrip
+            ? strip.baseTime + (strip.selectedStrip - 1) * strip.interval
+            : null;
+
+          return (
+            <Card key={strip.id} padding="compact" className="mb-4">
+              <div className="text-text-secondary mb-2">
+                {strip.baseTime}s base &middot; {strip.interval}s interval &middot; {strip.stripCount} strips
               </div>
-            )}
-          </Card>
-        ))}
+              <div className="flex gap-1 flex-wrap">
+                {Array.from({ length: strip.stripCount }, (_, i) => i + 1).map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => selectStrip(strip.id, n)}
+                    className={`w-9 h-9 rounded border cursor-pointer text-text-primary ${
+                      strip.selectedStrip === n
+                        ? 'border-2 border-success bg-success'
+                        : 'border-border bg-bg-elevated'
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              {selectedTime && (
+                <div className="mt-3 p-2 bg-success/10 border border-success/30 rounded">
+                  <div className="text-xs text-text-muted uppercase tracking-wide">Use for final print</div>
+                  <div className="text-2xl font-bold text-success">{selectedTime}s</div>
+                </div>
+              )}
+            </Card>
+          );
+        })}
 
         {showTestStripForm ? (
           <Card padding="compact" className="mb-4">

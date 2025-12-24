@@ -1,7 +1,7 @@
 import { useApp } from '../context/AppContext';
 import { useSession, usePrint, useAppSettings } from '../hooks';
 import { useTimer } from '../hooks/useTimer';
-import { Button, TimerDisplay, ProgressBar } from '../components';
+import { Button, TimerDisplay, ProgressBar, SessionContext } from '../components';
 
 export function Timer() {
   const { state, goToNotes } = useApp();
@@ -43,7 +43,9 @@ export function Timer() {
   }
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center p-6 max-w-[500px] mx-auto w-full">
+    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full">
+      <SessionContext sessionId={sessionId} />
+      <div className="flex-1 flex flex-col justify-center items-center p-6">
       {timerState.status === 'idle' && (
         <>
           <TimerDisplay
@@ -136,6 +138,7 @@ export function Timer() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }
