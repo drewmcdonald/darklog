@@ -17,48 +17,65 @@ function ChemistryStepEditor({
   onUpdate: (step: ProcessingStep) => void;
   onRemove: () => void;
 }) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
     <Card padding="compact" className="mb-4">
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-text-secondary">Step {index + 1}</span>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex justify-between items-center mb-2 bg-transparent border-none cursor-pointer text-left py-1 px-0"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-lg leading-none text-text-secondary">{isExpanded ? '▼' : '▶'}</span>
+          <span className="text-text-secondary">
+            Step {index + 1}{step.chemical && `: ${step.chemical}`}
+          </span>
+        </div>
         <button
-          onClick={onRemove}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           className="bg-transparent border-none text-error cursor-pointer text-xl"
         >
           &times;
         </button>
-      </div>
-      <Input
-        label="Chemical"
-        value={step.chemical}
-        onChange={(e) => onUpdate({ ...step, chemical: e.target.value })}
-      />
-      <div className="flex gap-4 mt-2">
-        <Input
-          label="Dilution"
-          value={step.dilution}
-          onChange={(e) => onUpdate({ ...step, dilution: e.target.value })}
-          className="flex-1 min-w-0"
-        />
-        <Input
-          label="Duration"
-          value={formatSeconds(step.duration)}
-          onChange={(e) => {
-            const seconds = parseTimeInput(e.target.value);
-            if (seconds !== null) onUpdate({ ...step, duration: seconds });
-          }}
-          className="flex-1 min-w-0"
-        />
-      </div>
-      <div className="mt-2">
-        <Input
-          label="Agitation Interval (sec)"
-          type="number"
-          value={step.agitationInterval ?? ''}
-          onChange={(e) => onUpdate({ ...step, agitationInterval: e.target.value ? parseInt(e.target.value) : null })}
-          placeholder="e.g. 30 (empty = continuous)"
-        />
-      </div>
+      </button>
+      {isExpanded && (
+        <>
+          <Input
+            label="Chemical"
+            value={step.chemical}
+            onChange={(e) => onUpdate({ ...step, chemical: e.target.value })}
+          />
+          <div className="flex gap-4 mt-2">
+            <Input
+              label="Dilution"
+              value={step.dilution}
+              onChange={(e) => onUpdate({ ...step, dilution: e.target.value })}
+              className="flex-1 min-w-0"
+            />
+            <Input
+              label="Duration"
+              value={formatSeconds(step.duration)}
+              onChange={(e) => {
+                const seconds = parseTimeInput(e.target.value);
+                if (seconds !== null) onUpdate({ ...step, duration: seconds });
+              }}
+              className="flex-1 min-w-0"
+            />
+          </div>
+          <div className="mt-2">
+            <Input
+              label="Agitation Interval (sec)"
+              type="number"
+              value={step.agitationInterval ?? ''}
+              onChange={(e) => onUpdate({ ...step, agitationInterval: e.target.value ? parseInt(e.target.value) : null })}
+              placeholder="e.g. 30 (empty = continuous)"
+            />
+          </div>
+        </>
+      )}
     </Card>
   );
 }
