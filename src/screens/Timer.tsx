@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { useSession, usePrint, useAppSettings } from '../hooks';
 import { useTimer } from '../hooks/useTimer';
@@ -31,6 +32,15 @@ export function Timer() {
     vibrationEnabled: settings?.vibrationEnabled ?? true,
     onComplete: () => goToNotes(sessionId, printId),
   });
+
+  // Auto-start timer on first load
+  const hasAutoStarted = useRef(false);
+  useEffect(() => {
+    if (timerState.status === 'idle' && !hasAutoStarted.current) {
+      hasAutoStarted.current = true;
+      start();
+    }
+  }, [timerState.status, start]);
 
   const progress = totalDuration > 0 ? timerState.totalElapsed / totalDuration : 0;
 
