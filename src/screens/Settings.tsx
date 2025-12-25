@@ -6,6 +6,8 @@ export function Settings() {
   const { goHome } = useApp();
   const { settings, loading, update } = useAppSettings();
 
+  const vibrationSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator;
+
   if (loading || !settings) {
     return (
       <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
@@ -48,25 +50,31 @@ export function Settings() {
 
         <Card>
           <div className="mb-4">
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-center justify-between cursor-pointer min-h-[48px] -m-3 p-3 rounded active:bg-surface-elevated transition-colors">
+              <span className="text-lg">Sound</span>
               <input
                 type="checkbox"
                 checked={settings.soundEnabled}
                 onChange={(e) => update({ soundEnabled: e.target.checked })}
-                className="w-6 h-6 accent-accent"
+                className="w-6 h-6 accent-accent cursor-pointer"
               />
-              <span className="text-lg">Sound</span>
             </label>
           </div>
           <div>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className={`flex items-center justify-between cursor-pointer min-h-[48px] -m-3 p-3 rounded active:bg-surface-elevated transition-colors ${!vibrationSupported ? 'opacity-50' : ''}`}>
+              <div className="flex flex-col">
+                <span className="text-lg">Vibration</span>
+                {!vibrationSupported && (
+                  <span className="text-xs text-text-muted mt-1">Not supported on this device</span>
+                )}
+              </div>
               <input
                 type="checkbox"
                 checked={settings.vibrationEnabled}
                 onChange={(e) => update({ vibrationEnabled: e.target.checked })}
-                className="w-6 h-6 accent-accent"
+                disabled={!vibrationSupported}
+                className="w-6 h-6 accent-accent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               />
-              <span className="text-lg">Vibration</span>
             </label>
           </div>
         </Card>
