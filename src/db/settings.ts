@@ -27,12 +27,10 @@ export async function updateAppSettings(
 export async function getStickyValues(): Promise<StickyValues> {
   const db = await getDB();
   const sticky = await db.get('sticky', 'default');
-  return sticky ?? { ...DEFAULT_STICKY_VALUES, id: 'default' } as StickyValues & { id: string };
+  return sticky ?? ({ ...DEFAULT_STICKY_VALUES, id: 'default' } as StickyValues & { id: string });
 }
 
-export async function updateStickyValues(
-  updates: Partial<StickyValues>
-): Promise<StickyValues> {
+export async function updateStickyValues(updates: Partial<StickyValues>): Promise<StickyValues> {
   const db = await getDB();
   const current = await getStickyValues();
 

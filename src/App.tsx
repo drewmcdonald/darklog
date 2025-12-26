@@ -1,5 +1,14 @@
 import { useApp } from './context/AppContext';
-import { Home, SessionSetup, PrintEditor, ExposureReview, Timer, Notes, Settings, History } from './screens';
+import {
+  Home,
+  SessionSetup,
+  PrintEditor,
+  ExposureReview,
+  Timer,
+  Notes,
+  Settings,
+  History,
+} from './screens';
 
 function AppContent() {
   const { state } = useApp();

@@ -28,7 +28,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             className="w-full text-lg py-3.5 pl-4 pr-10 bg-bg-secondary border-2 border-border rounded-lg text-text-primary min-h-13 appearance-none cursor-pointer transition-colors duration-150 focus:outline-none focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
             {...props}
           >
-            {options.map((option) => (
+            {options.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

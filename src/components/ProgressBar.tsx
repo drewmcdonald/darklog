@@ -19,9 +19,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
           style={{ left: `${percentage}%` }}
         />
       </div>
-      {label && (
-        <div className="text-sm text-text-muted mt-2 text-center">{label}</div>
-      )}
+      {label && <div className="text-sm text-text-muted mt-2 text-center">{label}</div>}
     </div>
   );
 }

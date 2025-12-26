@@ -31,7 +31,7 @@ export function Settings() {
               label="Transfer Delay (seconds)"
               type="number"
               value={settings.transferDelay}
-              onChange={(e) => update({ transferDelay: parseInt(e.target.value) || 2 })}
+              onChange={e => update({ transferDelay: parseInt(e.target.value) || 2 })}
             />
           </div>
           <div>
@@ -39,7 +39,7 @@ export function Settings() {
               label="Default Agitation Interval (seconds)"
               type="number"
               value={settings.defaultAgitationInterval}
-              onChange={(e) => update({ defaultAgitationInterval: parseInt(e.target.value) || 30 })}
+              onChange={e => update({ defaultAgitationInterval: parseInt(e.target.value) || 30 })}
             />
           </div>
         </Card>
@@ -55,12 +55,14 @@ export function Settings() {
               <input
                 type="checkbox"
                 checked={settings.soundEnabled}
-                onChange={(e) => update({ soundEnabled: e.target.checked })}
+                onChange={e => update({ soundEnabled: e.target.checked })}
               />
             </label>
           </div>
           <div>
-            <label className={`flex items-center justify-between cursor-pointer min-h-[48px] -m-3 p-3 rounded active:bg-surface-elevated transition-colors ${!vibrationSupported ? 'opacity-50' : ''}`}>
+            <label
+              className={`flex items-center justify-between cursor-pointer min-h-[48px] -m-3 p-3 rounded active:bg-surface-elevated transition-colors ${!vibrationSupported ? 'opacity-50' : ''}`}
+            >
               <div className="flex flex-col">
                 <span className="text-lg">Vibration</span>
                 {!vibrationSupported && (
@@ -70,7 +72,7 @@ export function Settings() {
               <input
                 type="checkbox"
                 checked={settings.vibrationEnabled}
-                onChange={(e) => update({ vibrationEnabled: e.target.checked })}
+                onChange={e => update({ vibrationEnabled: e.target.checked })}
                 disabled={!vibrationSupported}
               />
             </label>

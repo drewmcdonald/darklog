@@ -59,7 +59,8 @@ export function Notes() {
             {print.rollId} &middot; Frame {print.frameNumber}
           </div>
           <div className="text-text-secondary">
-            f/{print.exposure.aperture} &middot; {print.exposure.baseTime}s &middot; MG {print.paper.contrast.filterValue}
+            f/{print.exposure.aperture} &middot; {print.exposure.baseTime}s &middot; MG{' '}
+            {print.paper.contrast.filterValue}
           </div>
         </Card>
 
@@ -67,7 +68,7 @@ export function Notes() {
           <label className="text-sm text-text-secondary font-medium block mb-1.5">Notes</label>
           <textarea
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={e => setNotes(e.target.value)}
             placeholder="Dodging, burning, observations..."
             rows={5}
             className="w-full py-3.5 px-4 bg-bg-secondary border-2 border-border rounded-lg text-text-primary text-lg resize-y focus:outline-none focus:border-accent"
@@ -88,12 +89,16 @@ export function Notes() {
             </div>
           </div>
           <div>
-            <Button variant="secondary" onClick={handleNewFrame}>NEW FRAME</Button>
+            <Button variant="secondary" onClick={handleNewFrame}>
+              NEW FRAME
+            </Button>
             <div className="text-xs text-text-muted text-center mt-1.5">
               Next negative, keep settings
             </div>
           </div>
-          <Button variant="secondary" onClick={handleFinish}>FINISH SESSION</Button>
+          <Button variant="secondary" onClick={handleFinish}>
+            FINISH SESSION
+          </Button>
         </div>
       </div>
     </div>

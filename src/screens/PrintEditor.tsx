@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { useSession, usePrint, createPrint, updatePrint, useStickyValues, useSessionPrints } from '../hooks';
+import {
+  useSession,
+  usePrint,
+  createPrint,
+  updatePrint,
+  useStickyValues,
+  useSessionPrints,
+} from '../hooks';
 import { Header, BackButton, Button, Input, Select, Card, SessionContext } from '../components';
 import { PAPER_SIZES, APERTURES, CONTRAST_GRADES } from '../utils/defaults';
 import type { PrintRecord, TestStrip, ContrastSetting } from '../types';
@@ -110,7 +117,7 @@ export function PrintEditor() {
     const newSelection = isDeselecting ? null : selected;
 
     // Update test strips array
-    const strips = (print.testStrips ?? []).map((s) =>
+    const strips = (print.testStrips ?? []).map(s =>
       s.id === stripId ? { ...s, selectedStrip: newSelection } : s
     );
 
@@ -122,8 +129,8 @@ export function PrintEditor() {
         testStrips: strips,
         exposure: {
           ...print.exposure!,
-          baseTime: calculatedTime
-        }
+          baseTime: calculatedTime,
+        },
       });
     } else {
       setPrintState({ ...print, testStrips: strips });
@@ -139,7 +146,7 @@ export function PrintEditor() {
     );
   }
 
-  const contrastOptions = CONTRAST_GRADES.map((g) => ({ value: g.toString(), label: `MG ${g}` }));
+  const contrastOptions = CONTRAST_GRADES.map(g => ({ value: g.toString(), label: `MG ${g}` }));
 
   // Get previous print for reference (exclude current print if editing)
   const previousPrint = sessionPrints
@@ -148,26 +155,45 @@ export function PrintEditor() {
 
   return (
     <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
-      <Header title={printId ? 'EDIT PRINT' : 'NEW PRINT'} leftAction={<BackButton onClick={goHome} />} />
+      <Header
+        title={printId ? 'EDIT PRINT' : 'NEW PRINT'}
+        leftAction={<BackButton onClick={goHome} />}
+      />
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="flex gap-4 mb-4">
-          <Input label="Roll" value={print.rollId ?? ''} onChange={(e) => setPrintState({ ...print, rollId: e.target.value })} placeholder="e.g. HP5 R12" className="flex-1 min-w-0" />
-          <Input label="Frame" value={print.frameNumber ?? ''} onChange={(e) => setPrintState({ ...print, frameNumber: e.target.value })} placeholder="e.g. 24" className="flex-1 min-w-0" />
+          <Input
+            label="Roll"
+            value={print.rollId ?? ''}
+            onChange={e => setPrintState({ ...print, rollId: e.target.value })}
+            placeholder="e.g. HP5 R12"
+            className="flex-1 min-w-0"
+          />
+          <Input
+            label="Frame"
+            value={print.frameNumber ?? ''}
+            onChange={e => setPrintState({ ...print, frameNumber: e.target.value })}
+            placeholder="e.g. 24"
+            className="flex-1 min-w-0"
+          />
         </div>
 
         {previousPrint && !printId && (
           <Card padding="compact" className="mb-4 bg-bg-elevated">
-            <div className="text-xs text-text-muted mb-1.5 uppercase tracking-wide">Previous Print</div>
+            <div className="text-xs text-text-muted mb-1.5 uppercase tracking-wide">
+              Previous Print
+            </div>
             <div className="text-sm text-text-secondary">
               {previousPrint.rollId} • Frame {previousPrint.frameNumber}
             </div>
             <div className="text-sm text-text-primary mt-1">
-              f/{previousPrint.exposure.aperture} • {previousPrint.exposure.baseTime}s • MG {previousPrint.paper.contrast.filterValue}
+              f/{previousPrint.exposure.aperture} • {previousPrint.exposure.baseTime}s • MG{' '}
+              {previousPrint.paper.contrast.filterValue}
             </div>
             {previousPrint.rating && (
               <div className="text-xs text-text-muted mt-1">
-                Rating: {'★'.repeat(previousPrint.rating)}{'☆'.repeat(5 - previousPrint.rating)}
+                Rating: {'★'.repeat(previousPrint.rating)}
+                {'☆'.repeat(5 - previousPrint.rating)}
               </div>
             )}
           </Card>
@@ -180,15 +206,25 @@ export function PrintEditor() {
           <Select
             label="Aperture"
             value={print.exposure?.aperture?.toString() ?? '8'}
-            onChange={(e) => setPrintState({ ...print, exposure: { ...print.exposure!, aperture: parseFloat(e.target.value) } })}
-            options={APERTURES.map((a) => ({ value: a.toString(), label: `f/${a}` }))}
+            onChange={e =>
+              setPrintState({
+                ...print,
+                exposure: { ...print.exposure!, aperture: parseFloat(e.target.value) },
+              })
+            }
+            options={APERTURES.map(a => ({ value: a.toString(), label: `f/${a}` }))}
             className="flex-1 min-w-0"
           />
           <Input
             label="Time (sec)"
             type="number"
             value={print.exposure?.baseTime ?? ''}
-            onChange={(e) => setPrintState({ ...print, exposure: { ...print.exposure!, baseTime: parseInt(e.target.value) || 0 } })}
+            onChange={e =>
+              setPrintState({
+                ...print,
+                exposure: { ...print.exposure!, baseTime: parseInt(e.target.value) || 0 },
+              })
+            }
             className="flex-1 min-w-0"
           />
         </div>
@@ -196,14 +232,33 @@ export function PrintEditor() {
           <Input
             label="Height"
             value={print.exposure?.enlargerHeight ?? ''}
-            onChange={(e) => setPrintState({ ...print, exposure: { ...print.exposure!, enlargerHeight: e.target.value ? parseInt(e.target.value) : null } })}
+            onChange={e =>
+              setPrintState({
+                ...print,
+                exposure: {
+                  ...print.exposure!,
+                  enlargerHeight: e.target.value ? parseInt(e.target.value) : null,
+                },
+              })
+            }
             placeholder="cm"
             className="flex-1 min-w-0"
           />
           <Select
             label="Contrast"
             value={print.paper?.contrast?.filterValue?.toString() ?? '2.5'}
-            onChange={(e) => setPrintState({ ...print, paper: { ...print.paper!, contrast: { type: 'multigrade', filterValue: parseFloat(e.target.value) } as ContrastSetting } })}
+            onChange={e =>
+              setPrintState({
+                ...print,
+                paper: {
+                  ...print.paper!,
+                  contrast: {
+                    type: 'multigrade',
+                    filterValue: parseFloat(e.target.value),
+                  } as ContrastSetting,
+                },
+              })
+            }
             options={contrastOptions}
             className="flex-1 min-w-0"
           />
@@ -212,15 +267,17 @@ export function PrintEditor() {
           <Select
             label="Paper Size"
             value={print.paper?.size ?? '8x10'}
-            onChange={(e) => setPrintState({ ...print, paper: { ...print.paper!, size: e.target.value } })}
-            options={PAPER_SIZES.map((s) => ({ value: s, label: s }))}
+            onChange={e =>
+              setPrintState({ ...print, paper: { ...print.paper!, size: e.target.value } })
+            }
+            options={PAPER_SIZES.map(s => ({ value: s, label: s }))}
           />
         </div>
 
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Test Strips ({print.testStrips?.length ?? 0})
         </div>
-        {(print.testStrips ?? []).map((strip) => {
+        {(print.testStrips ?? []).map(strip => {
           const selectedTime = strip.selectedStrip
             ? strip.baseTime + (strip.selectedStrip - 1) * strip.interval
             : null;
@@ -228,10 +285,11 @@ export function PrintEditor() {
           return (
             <Card key={strip.id} padding="compact" className="mb-4">
               <div className="text-text-secondary mb-2">
-                {strip.baseTime}s base &middot; {strip.interval}s interval &middot; {strip.stripCount} strips
+                {strip.baseTime}s base &middot; {strip.interval}s interval &middot;{' '}
+                {strip.stripCount} strips
               </div>
               <div className="flex gap-1 flex-wrap">
-                {Array.from({ length: strip.stripCount }, (_, i) => i + 1).map((n) => (
+                {Array.from({ length: strip.stripCount }, (_, i) => i + 1).map(n => (
                   <button
                     key={n}
                     onClick={() => selectStrip(strip.id, n)}
@@ -247,7 +305,9 @@ export function PrintEditor() {
               </div>
               {selectedTime && (
                 <div className="mt-3 p-2 bg-success/10 border border-success/30 rounded">
-                  <div className="text-xs text-text-muted uppercase tracking-wide">Use for final print</div>
+                  <div className="text-xs text-text-muted uppercase tracking-wide">
+                    Use for final print
+                  </div>
                   <div className="text-2xl font-bold text-success">{selectedTime}s</div>
                 </div>
               )}
@@ -258,17 +318,45 @@ export function PrintEditor() {
         {showTestStripForm ? (
           <Card padding="compact" className="mb-4">
             <div className="flex gap-4 mb-2">
-              <Input label="Base (s)" type="number" value={testStripForm.baseTime} onChange={(e) => setTestStripForm({ ...testStripForm, baseTime: parseInt(e.target.value) || 0 })} className="flex-1 min-w-0" />
-              <Input label="Interval (s)" type="number" value={testStripForm.interval} onChange={(e) => setTestStripForm({ ...testStripForm, interval: parseInt(e.target.value) || 0 })} className="flex-1 min-w-0" />
-              <Input label="Strips" type="number" value={testStripForm.stripCount} onChange={(e) => setTestStripForm({ ...testStripForm, stripCount: parseInt(e.target.value) || 0 })} className="flex-1 min-w-0" />
+              <Input
+                label="Base (s)"
+                type="number"
+                value={testStripForm.baseTime}
+                onChange={e =>
+                  setTestStripForm({ ...testStripForm, baseTime: parseInt(e.target.value) || 0 })
+                }
+                className="flex-1 min-w-0"
+              />
+              <Input
+                label="Interval (s)"
+                type="number"
+                value={testStripForm.interval}
+                onChange={e =>
+                  setTestStripForm({ ...testStripForm, interval: parseInt(e.target.value) || 0 })
+                }
+                className="flex-1 min-w-0"
+              />
+              <Input
+                label="Strips"
+                type="number"
+                value={testStripForm.stripCount}
+                onChange={e =>
+                  setTestStripForm({ ...testStripForm, stripCount: parseInt(e.target.value) || 0 })
+                }
+                className="flex-1 min-w-0"
+              />
             </div>
             <div className="flex gap-2">
-              <Button variant="secondary" onClick={() => setShowTestStripForm(false)}>Cancel</Button>
+              <Button variant="secondary" onClick={() => setShowTestStripForm(false)}>
+                Cancel
+              </Button>
               <Button onClick={addTestStrip}>Add</Button>
             </div>
           </Card>
         ) : (
-          <Button variant="secondary" onClick={() => setShowTestStripForm(true)}>+ Add Test Strip</Button>
+          <Button variant="secondary" onClick={() => setShowTestStripForm(true)}>
+            + Add Test Strip
+          </Button>
         )}
       </div>
       <div className="p-4 border-t border-border">

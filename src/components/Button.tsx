@@ -11,12 +11,10 @@ const baseClasses =
   'font-medium rounded-lg border-2 cursor-pointer transition-colors duration-150 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
 const variantClasses = {
-  primary:
-    'bg-transparent text-text-primary border-text-primary hover:bg-bg-elevated',
+  primary: 'bg-transparent text-text-primary border-text-primary hover:bg-bg-elevated',
   secondary:
     'bg-transparent text-text-secondary border-border hover:bg-bg-secondary hover:border-text-secondary',
-  danger:
-    'bg-transparent text-text-primary border-text-primary hover:bg-bg-elevated',
+  danger: 'bg-transparent text-text-primary border-text-primary hover:bg-bg-elevated',
 };
 
 const sizeClasses = {

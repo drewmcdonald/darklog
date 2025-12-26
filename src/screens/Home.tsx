@@ -35,10 +35,14 @@ function SessionCard({
         </div>
       </div>
       {isToday && (
-        <Button variant="primary" fullWidth={false} onClick={(e) => {
-          e.stopPropagation();
-          onContinue();
-        }}>
+        <Button
+          variant="primary"
+          fullWidth={false}
+          onClick={e => {
+            e.stopPropagation();
+            onContinue();
+          }}
+        >
           Continue
         </Button>
       )}
@@ -54,7 +58,7 @@ export function Home() {
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
-    const found = sessions.find((s) => s.date === today);
+    const found = sessions.find(s => s.date === today);
     setTodaysSession(found ?? null);
   }, [sessions, today]);
 
@@ -74,15 +78,19 @@ export function Home() {
     goToSessionSetup(session.id);
   };
 
-  const pastSessions = sessions.filter((s) => s.date !== today);
+  const pastSessions = sessions.filter(s => s.date !== today);
 
   if (loading) {
     return (
       <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header
           title="DarkLog"
-          leftAction={<IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />}
-          rightAction={<IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />}
+          leftAction={
+            <IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />
+          }
+          rightAction={
+            <IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />
+          }
         />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -93,8 +101,12 @@ export function Home() {
     <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header
         title="DarkLog"
-        leftAction={<IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />}
-        rightAction={<IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />}
+        leftAction={
+          <IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />
+        }
+        rightAction={
+          <IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />
+        }
       />
       <div className="flex-1 p-4 overflow-y-auto">
         {todaysSession && (
@@ -118,7 +130,7 @@ export function Home() {
               Past Sessions
             </div>
             <div className="flex flex-col gap-2">
-              {pastSessions.map((session) => (
+              {pastSessions.map(session => (
                 <SessionCard
                   key={session.id}
                   session={session}

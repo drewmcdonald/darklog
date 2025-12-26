@@ -3,20 +3,18 @@ import { useSessions, useSessionPrints, deleteSession, deletePrint } from '../ho
 import { Header, BackButton, Card, IconButton } from '../components';
 import { formatFullDate } from '../utils/time';
 import type { Session, PrintRecord } from '../types';
-import { Trash2} from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
-function SessionHistoryCard({
-  session,
-  onDelete
-}: {
-  session: Session;
-  onDelete: () => void;
-}) {
+function SessionHistoryCard({ session, onDelete }: { session: Session; onDelete: () => void }) {
   const { goToPrintEditor } = useApp();
   const { prints, refresh } = useSessionPrints(session.id);
 
   const handleDeleteSession = async () => {
-    if (!confirm(`Delete this session and all ${prints.length} print${prints.length !== 1 ? 's' : ''}?`)) {
+    if (
+      !confirm(
+        `Delete this session and all ${prints.length} print${prints.length !== 1 ? 's' : ''}?`
+      )
+    ) {
       return;
     }
 
@@ -52,12 +50,10 @@ function SessionHistoryCard({
   return (
     <Card className="mb-4">
       <div className="flex justify-between items-start mb-2">
-        <div className="font-medium">
-          {formatFullDate(session.date)}
-        </div>
+        <div className="font-medium">{formatFullDate(session.date)}</div>
         <IconButton
           icon={<Trash2 size={16} />}
-          label='Delete session'
+          label="Delete session"
           onClick={handleDeleteSession}
         />
       </div>
@@ -69,26 +65,27 @@ function SessionHistoryCard({
       </div>
       {prints.length > 0 && (
         <div className="mt-3 pt-3 border-t border-border">
-          {prints.slice(0, 5).map((p) => (
-            <div key={p.id} className="text-text-secondary text-sm mb-1 flex justify-between items-center group">
+          {prints.slice(0, 5).map(p => (
+            <div
+              key={p.id}
+              className="text-text-secondary text-sm mb-1 flex justify-between items-center group"
+            >
               <button
                 onClick={() => goToPrintEditor(session.id, p.id)}
                 className="flex-1 text-left hover:text-text-primary transition-colors cursor-pointer"
               >
-                {p.rollId} #{p.frameNumber} &middot; f/{p.exposure.aperture} &middot; {p.exposure.baseTime}s
-                {p.rating && ` · ${'★'.repeat(p.rating)}`}
+                {p.rollId} #{p.frameNumber} &middot; f/{p.exposure.aperture} &middot;{' '}
+                {p.exposure.baseTime}s{p.rating && ` · ${'★'.repeat(p.rating)}`}
               </button>
               <IconButton
                 icon={<Trash2 size={12} />}
-                label='Delete print'
+                label="Delete print"
                 onClick={() => handleDeletePrint(p)}
-                />
+              />
             </div>
           ))}
           {prints.length > 5 && (
-            <div className="text-text-muted text-sm">
-              +{prints.length - 5} more
-            </div>
+            <div className="text-text-muted text-sm">+{prints.length - 5} more</div>
           )}
         </div>
       )}
@@ -116,7 +113,7 @@ export function History() {
         {sessions.length === 0 ? (
           <div className="text-center text-text-muted">No sessions yet</div>
         ) : (
-          sessions.map((session) => (
+          sessions.map(session => (
             <SessionHistoryCard key={session.id} session={session} onDelete={refresh} />
           ))
         )}

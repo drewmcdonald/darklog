@@ -28,11 +28,12 @@ function ChemistryStepEditor({
         <div className="flex items-center gap-2">
           <span className="text-lg leading-none text-text-secondary">{isExpanded ? '▼' : '▶'}</span>
           <span className="text-text-secondary">
-            Step {index + 1}{step.chemical && `: ${step.chemical}`}
+            Step {index + 1}
+            {step.chemical && `: ${step.chemical}`}
           </span>
         </div>
         <button
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             onRemove();
           }}
@@ -46,19 +47,19 @@ function ChemistryStepEditor({
           <Input
             label="Chemical"
             value={step.chemical}
-            onChange={(e) => onUpdate({ ...step, chemical: e.target.value })}
+            onChange={e => onUpdate({ ...step, chemical: e.target.value })}
           />
           <div className="flex gap-4 mt-2">
             <Input
               label="Dilution"
               value={step.dilution}
-              onChange={(e) => onUpdate({ ...step, dilution: e.target.value })}
+              onChange={e => onUpdate({ ...step, dilution: e.target.value })}
               className="flex-1 min-w-0"
             />
             <Input
               label="Duration"
               value={formatSeconds(step.duration)}
-              onChange={(e) => {
+              onChange={e => {
                 const seconds = parseTimeInput(e.target.value);
                 if (seconds !== null) onUpdate({ ...step, duration: seconds });
               }}
@@ -70,7 +71,12 @@ function ChemistryStepEditor({
               label="Agitation Interval (sec)"
               type="number"
               value={step.agitationInterval ?? ''}
-              onChange={(e) => onUpdate({ ...step, agitationInterval: e.target.value ? parseInt(e.target.value) : null })}
+              onChange={e =>
+                onUpdate({
+                  ...step,
+                  agitationInterval: e.target.value ? parseInt(e.target.value) : null,
+                })
+              }
               placeholder="e.g. 30 (empty = continuous)"
             />
           </div>
@@ -106,7 +112,10 @@ export function SessionSetup() {
       ...defaults,
       processing: {
         ...defaults.processing,
-        steps: [...defaults.processing.steps, { chemical: '', dilution: 'stock', duration: 60, agitationInterval: 30 }],
+        steps: [
+          ...defaults.processing.steps,
+          { chemical: '', dilution: 'stock', duration: 60, agitationInterval: 30 },
+        ],
       },
     });
   };
@@ -120,7 +129,13 @@ export function SessionSetup() {
 
   const removeStep = (index: number) => {
     if (!defaults) return;
-    setDefaults({ ...defaults, processing: { ...defaults.processing, steps: defaults.processing.steps.filter((_, i) => i !== index) } });
+    setDefaults({
+      ...defaults,
+      processing: {
+        ...defaults.processing,
+        steps: defaults.processing.steps.filter((_, i) => i !== index),
+      },
+    });
   };
 
   if (loading || !defaults) {
@@ -137,32 +152,80 @@ export function SessionSetup() {
       <Header title="SESSION SETUP" leftAction={<BackButton onClick={goHome} />} />
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="mb-4">
-          <Input label="Lens" value={defaults.lens} onChange={(e) => setDefaults({ ...defaults, lens: e.target.value })} placeholder="e.g. 50mm El-Nikkor" />
+          <Input
+            label="Lens"
+            value={defaults.lens}
+            onChange={e => setDefaults({ ...defaults, lens: e.target.value })}
+            placeholder="e.g. 50mm El-Nikkor"
+          />
         </div>
 
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Paper
         </div>
         <div className="mb-4">
-          <Input label="Manufacturer" value={defaults.paper.manufacturer} onChange={(e) => setDefaults({ ...defaults, paper: { ...defaults.paper, manufacturer: e.target.value } })} />
+          <Input
+            label="Manufacturer"
+            value={defaults.paper.manufacturer}
+            onChange={e =>
+              setDefaults({
+                ...defaults,
+                paper: { ...defaults.paper, manufacturer: e.target.value },
+              })
+            }
+          />
         </div>
         <div className="mb-4">
-          <Input label="Name" value={defaults.paper.name} onChange={(e) => setDefaults({ ...defaults, paper: { ...defaults.paper, name: e.target.value } })} />
+          <Input
+            label="Name"
+            value={defaults.paper.name}
+            onChange={e =>
+              setDefaults({ ...defaults, paper: { ...defaults.paper, name: e.target.value } })
+            }
+          />
         </div>
         <div className="mb-4">
-          <Select label="Surface" value={defaults.paper.surface} onChange={(e) => setDefaults({ ...defaults, paper: { ...defaults.paper, surface: e.target.value } })} options={SURFACES.map((s) => ({ value: s, label: s }))} />
+          <Select
+            label="Surface"
+            value={defaults.paper.surface}
+            onChange={e =>
+              setDefaults({ ...defaults, paper: { ...defaults.paper, surface: e.target.value } })
+            }
+            options={SURFACES.map(s => ({ value: s, label: s }))}
+          />
         </div>
 
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">
           Chemistry Sequence
         </div>
         {defaults.processing.steps.map((step, i) => (
-          <ChemistryStepEditor key={i} step={step} index={i} onUpdate={(s) => updateStep(i, s)} onRemove={() => removeStep(i)} />
+          <ChemistryStepEditor
+            key={i}
+            step={step}
+            index={i}
+            onUpdate={s => updateStep(i, s)}
+            onRemove={() => removeStep(i)}
+          />
         ))}
-        <Button variant="secondary" onClick={addStep}>+ Add Step</Button>
+        <Button variant="secondary" onClick={addStep}>
+          + Add Step
+        </Button>
 
         <div className="mb-4 mt-4">
-          <Input label="Temperature (°C)" type="number" value={defaults.processing.temperature ?? ''} onChange={(e) => setDefaults({ ...defaults, processing: { ...defaults.processing, temperature: e.target.value ? parseInt(e.target.value) : null } })} />
+          <Input
+            label="Temperature (°C)"
+            type="number"
+            value={defaults.processing.temperature ?? ''}
+            onChange={e =>
+              setDefaults({
+                ...defaults,
+                processing: {
+                  ...defaults.processing,
+                  temperature: e.target.value ? parseInt(e.target.value) : null,
+                },
+              })
+            }
+          />
         </div>
       </div>
       <div className="p-4 border-t border-border">

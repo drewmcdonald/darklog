@@ -11,7 +11,7 @@ export function RatingPicker({ value, onChange, max = 5 }: RatingPickerProps) {
     <div className="flex flex-col gap-2">
       <div className="text-sm text-text-secondary font-medium">Rating</div>
       <div className="flex gap-2">
-        {ratings.map((rating) => (
+        {ratings.map(rating => (
           <button
             key={rating}
             type="button"

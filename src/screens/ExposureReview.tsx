@@ -23,9 +23,10 @@ export function ExposureReview() {
     );
   }
 
-  const contrastDisplay = print.paper.contrast.type === 'multigrade'
-    ? `MG ${print.paper.contrast.filterValue}`
-    : `Grade ${print.paper.contrast.grade}`;
+  const contrastDisplay =
+    print.paper.contrast.type === 'multigrade'
+      ? `MG ${print.paper.contrast.filterValue}`
+      : `Grade ${print.paper.contrast.grade}`;
 
   return (
     <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
@@ -54,9 +55,7 @@ export function ExposureReview() {
               </div>
 
               <div className="text-center">
-                <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
-                  Time
-                </div>
+                <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">Time</div>
                 <div className="text-3xl font-bold text-text-primary">
                   {print.exposure.baseTime}s
                 </div>
@@ -66,9 +65,7 @@ export function ExposureReview() {
                 <div className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
                   Contrast
                 </div>
-                <div className="text-3xl font-bold text-text-primary">
-                  {contrastDisplay}
-                </div>
+                <div className="text-3xl font-bold text-text-primary">{contrastDisplay}</div>
               </div>
             </div>
 

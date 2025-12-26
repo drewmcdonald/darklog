@@ -16,7 +16,8 @@ export function SessionContext({ sessionId }: SessionContextProps) {
   return (
     <div className="bg-bg-secondary border-b border-border py-2 px-4">
       <div className="text-xs text-text-muted text-center">
-        {new Date(session.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} • {paperName} • Print #{printCount + 1}
+        {new Date(session.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} •{' '}
+        {paperName} • Print #{printCount + 1}
       </div>
     </div>
   );

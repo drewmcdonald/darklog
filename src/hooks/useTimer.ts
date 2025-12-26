@@ -56,7 +56,7 @@ export function useTimer({
   }, [steps, state.status]);
 
   const tick = useCallback(() => {
-    setState((prev) => {
+    setState(prev => {
       if (prev.status !== 'running' && prev.status !== 'transferring') {
         return prev;
       }
@@ -162,15 +162,15 @@ export function useTimer({
   }, [state.status, tick]);
 
   const start = useCallback(() => {
-    setState((prev) => ({ ...prev, status: 'running' }));
+    setState(prev => ({ ...prev, status: 'running' }));
   }, []);
 
   const pause = useCallback(() => {
-    setState((prev) => ({ ...prev, status: 'paused' }));
+    setState(prev => ({ ...prev, status: 'paused' }));
   }, []);
 
   const resume = useCallback(() => {
-    setState((prev) => ({ ...prev, status: 'running' }));
+    setState(prev => ({ ...prev, status: 'running' }));
   }, []);
 
   const reset = useCallback(() => {

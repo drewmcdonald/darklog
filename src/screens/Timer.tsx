@@ -56,98 +56,84 @@ export function Timer() {
     <div className="flex-1 flex flex-col max-w-125 mx-auto w-full">
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 flex flex-col justify-center items-center p-6">
-      {timerState.status === 'idle' && (
-        <>
-          <TimerDisplay
-            seconds={timerState.remainingTime}
-            label={currentStep?.chemical ?? 'Ready'}
-          />
-          <div className="w-full max-w-[300px] mt-8">
-            <Button size="large" onClick={start}>
-              START
-            </Button>
-          </div>
-          <div className="text-text-muted mt-4">
-            Tap to begin {currentStep?.chemical}
-          </div>
-        </>
-      )}
+        {timerState.status === 'idle' && (
+          <>
+            <TimerDisplay
+              seconds={timerState.remainingTime}
+              label={currentStep?.chemical ?? 'Ready'}
+            />
+            <div className="w-full max-w-[300px] mt-8">
+              <Button size="large" onClick={start}>
+                START
+              </Button>
+            </div>
+            <div className="text-text-muted mt-4">Tap to begin {currentStep?.chemical}</div>
+          </>
+        )}
 
-      {timerState.status === 'running' && (
-        <>
-          <TimerDisplay
-            seconds={timerState.remainingTime}
-            label={currentStep?.chemical ?? ''}
-            sublabel={
-              timerState.nextAgitationIn !== null
-                ? `Agitate in ${timerState.nextAgitationIn}s`
-                : undefined
-            }
-          />
-          <div className="w-full max-w-[300px] my-8">
-            <ProgressBar progress={progress} />
-          </div>
-          <div className="w-full max-w-[300px]">
-            <Button size="large" variant="secondary" onClick={pause}>
-              PAUSE
-            </Button>
-          </div>
-          {nextStep && (
-            <div className="text-text-muted mt-4">
-              Next: {nextStep.chemical}
+        {timerState.status === 'running' && (
+          <>
+            <TimerDisplay
+              seconds={timerState.remainingTime}
+              label={currentStep?.chemical ?? ''}
+              sublabel={
+                timerState.nextAgitationIn !== null
+                  ? `Agitate in ${timerState.nextAgitationIn}s`
+                  : undefined
+              }
+            />
+            <div className="w-full max-w-[300px] my-8">
+              <ProgressBar progress={progress} />
             </div>
-          )}
-        </>
-      )}
+            <div className="w-full max-w-[300px]">
+              <Button size="large" variant="secondary" onClick={pause}>
+                PAUSE
+              </Button>
+            </div>
+            {nextStep && <div className="text-text-muted mt-4">Next: {nextStep.chemical}</div>}
+          </>
+        )}
 
-      {timerState.status === 'paused' && (
-        <>
-          <TimerDisplay
-            seconds={timerState.remainingTime}
-            label={currentStep?.chemical ?? ''}
-            sublabel="PAUSED"
-          />
-          <div className="w-full max-w-[300px] mt-8">
-            <Button size="large" onClick={resume}>
-              RESUME
-            </Button>
-          </div>
-        </>
-      )}
+        {timerState.status === 'paused' && (
+          <>
+            <TimerDisplay
+              seconds={timerState.remainingTime}
+              label={currentStep?.chemical ?? ''}
+              sublabel="PAUSED"
+            />
+            <div className="w-full max-w-[300px] mt-8">
+              <Button size="large" onClick={resume}>
+                RESUME
+              </Button>
+            </div>
+          </>
+        )}
 
-      {timerState.status === 'transferring' && (
-        <>
-          <div className="text-center">
-            <div className="text-xl text-text-secondary mb-4">
-              TRANSFER TO
+        {timerState.status === 'transferring' && (
+          <>
+            <div className="text-center">
+              <div className="text-xl text-text-secondary mb-4">TRANSFER TO</div>
+              <div className="text-2xl font-bold">{nextStep?.chemical ?? 'Next Step'}</div>
+              <div className="text-timer font-bold mt-4">{timerState.remainingTime}</div>
             </div>
-            <div className="text-2xl font-bold">
-              {nextStep?.chemical ?? 'Next Step'}
+            <div className="w-full max-w-[300px] my-8">
+              <ProgressBar progress={progress} />
             </div>
-            <div className="text-timer font-bold mt-4">
-              {timerState.remainingTime}
-            </div>
-          </div>
-          <div className="w-full max-w-[300px] my-8">
-            <ProgressBar progress={progress} />
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      {timerState.status === 'complete' && (
-        <>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-success">
-              COMPLETE
+        {timerState.status === 'complete' && (
+          <>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-success">COMPLETE</div>
             </div>
-          </div>
-          <div className="w-full max-w-[300px] mt-8">
-            <Button size="large" onClick={() => goToNotes(sessionId, printId)}>
-              CONTINUE
-            </Button>
-          </div>
-        </>
-      )}
+            <div className="w-full max-w-[300px] mt-8">
+              <Button size="large" onClick={() => goToNotes(sessionId, printId)}>
+                CONTINUE
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
