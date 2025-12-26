@@ -1,0 +1,20 @@
+# Build outputs
+dist
+build
+.vite
+
+# Dependencies
+node_modules
+
+# Cache
+.cache
+*.log
+
+# PWA
+sw.js
+workbox-*.js
+dev-dist
+
+# Misc
+coverage
+.DS_Store
