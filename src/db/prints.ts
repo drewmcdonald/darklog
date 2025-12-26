@@ -14,6 +14,7 @@ export interface CreatePrintOptions {
   paper?: PaperSettings;
   exposure?: ExposureSettings;
   processing?: ProcessingRecord;
+  testStrips?: PrintRecord['testStrips'];
 }
 
 export async function createPrint(options: CreatePrintOptions): Promise<PrintRecord> {
@@ -30,7 +31,7 @@ export async function createPrint(options: CreatePrintOptions): Promise<PrintRec
     paper: options.paper ?? { ...DEFAULT_PAPER_SETTINGS },
     exposure: options.exposure ?? { ...DEFAULT_EXPOSURE_SETTINGS },
     processing: options.processing ?? { ...DEFAULT_PROCESSING },
-    testStrips: [],
+    testStrips: options.testStrips ?? [],
     notes: '',
     rating: null,
   };

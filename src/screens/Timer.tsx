@@ -101,11 +101,15 @@ export function Timer() {
               label={currentStep?.chemical ?? ''}
               sublabel="PAUSED"
             />
-            <div className="w-full max-w-[300px] mt-8">
+            <div className="w-full max-w-[300px] my-8">
+              <ProgressBar progress={progress} />
+            </div>
+            <div className="w-full max-w-[300px]">
               <Button size="large" onClick={resume}>
                 RESUME
               </Button>
             </div>
+            {nextStep && <div className="text-text-muted mt-4">Next: {nextStep.chemical}</div>}
           </>
         )}
 

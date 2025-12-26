@@ -5,21 +5,21 @@ import { useSessions, createSession, useSessionPrints } from '../hooks';
 import { Header, IconButton, Button, Card } from '../components';
 import { formatDate } from '../utils/time';
 import { DEFAULT_SESSION_DEFAULTS } from '../utils/defaults';
-import type { Session } from '../types';
+import type { Session, PrintRecord } from '../types';
 
 function SessionCard({
   session,
+  prints,
   isToday,
   onContinue,
   onClick,
 }: {
   session: Session;
+  prints: PrintRecord[];
   isToday: boolean;
   onContinue: () => void;
   onClick: () => void;
 }) {
-  const { prints } = useSessionPrints(session.id);
-
   return (
     <Card
       className="flex justify-between items-center cursor-pointer transition-colors duration-150 hover:bg-bg-elevated"
@@ -50,17 +50,49 @@ function SessionCard({
   );
 }
 
+function PastSessionCard({
+  session,
+  onClick,
+}: {
+  session: Session;
+  onClick: () => void;
+}) {
+  const { prints } = useSessionPrints(session.id);
+
+  return (
+    <SessionCard
+      session={session}
+      prints={prints}
+      isToday={false}
+      onContinue={() => {}}
+      onClick={onClick}
+    />
+  );
+}
+
 export function Home() {
-  const { goToSettings, goToHistory, goToSessionSetup, goToPrintEditor, setSession } = useApp();
-  const { sessions, loading } = useSessions();
+  const { state, goToSettings, goToHistory, goToSessionSetup, goToPrintEditor, setSession } =
+    useApp();
+  const { sessions, loading, refresh: refreshSessions } = useSessions();
   const [todaysSession, setTodaysSession] = useState<Session | null>(null);
 
   const today = new Date().toISOString().split('T')[0];
+
+  // Fetch prints for today's session
+  const { prints: todaysPrints, refresh: refreshPrints } = useSessionPrints(todaysSession?.id);
 
   useEffect(() => {
     const found = sessions.find(s => s.date === today);
     setTodaysSession(found ?? null);
   }, [sessions, today]);
+
+  // Refresh data when returning to home screen
+  useEffect(() => {
+    if (state.screen.name === 'home') {
+      refreshSessions();
+      refreshPrints();
+    }
+  }, [state.screen.name, refreshSessions, refreshPrints]);
 
   const handleNewSession = async () => {
     const session = await createSession(DEFAULT_SESSION_DEFAULTS);
@@ -113,6 +145,7 @@ export function Home() {
           <div className="mb-6">
             <SessionCard
               session={todaysSession}
+              prints={todaysPrints}
               isToday={true}
               onContinue={() => handleContinueSession(todaysSession)}
               onClick={() => handleEditSession(todaysSession)}
@@ -131,11 +164,9 @@ export function Home() {
             </div>
             <div className="flex flex-col gap-2">
               {pastSessions.map(session => (
-                <SessionCard
+                <PastSessionCard
                   key={session.id}
                   session={session}
-                  isToday={false}
-                  onContinue={() => handleContinueSession(session)}
                   onClick={() => handleEditSession(session)}
                 />
               ))}

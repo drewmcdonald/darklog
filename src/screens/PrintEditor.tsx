@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { X, Settings } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import {
   useSession,
@@ -8,13 +9,22 @@ import {
   useStickyValues,
   useSessionPrints,
 } from '../hooks';
-import { Header, BackButton, Button, Input, Select, Card, SessionContext } from '../components';
+import {
+  Header,
+  BackButton,
+  IconButton,
+  Button,
+  Input,
+  Select,
+  Card,
+  SessionContext,
+} from '../components';
 import { PAPER_SIZES, APERTURES, CONTRAST_GRADES } from '../utils/defaults';
 import type { PrintRecord, TestStrip, ContrastSetting } from '../types';
 import { generateId, timestamp } from '../utils/id';
 
 export function PrintEditor() {
-  const { state, goHome, goToExposureReview, setPrint } = useApp();
+  const { state, goHome, goToSessionSetup, goToExposureReview, setPrint } = useApp();
   const screen = state.screen;
   const sessionId = screen.name === 'printEditor' ? screen.sessionId : '';
   const printId = screen.name === 'printEditor' ? screen.printId : undefined;
@@ -81,6 +91,7 @@ export function PrintEditor() {
         paper: print.paper,
         exposure: print.exposure,
         processing: print.processing,
+        testStrips: print.testStrips,
       });
     }
 
@@ -137,10 +148,26 @@ export function PrintEditor() {
     }
   };
 
+  const deleteTestStrip = (stripId: string) => {
+    if (!print) return;
+    const strips = (print.testStrips ?? []).filter(s => s.id !== stripId);
+    setPrintState({ ...print, testStrips: strips });
+  };
+
   if (!session || !print) {
     return (
       <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
-        <Header title="NEW PRINT" leftAction={<BackButton onClick={goHome} />} />
+        <Header
+          title="NEW PRINT"
+          leftAction={<BackButton onClick={goHome} />}
+          rightAction={
+            <IconButton
+              icon={<Settings size={20} />}
+              label="Session settings"
+              onClick={() => goToSessionSetup(sessionId)}
+            />
+          }
+        />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
     );
@@ -158,6 +185,13 @@ export function PrintEditor() {
       <Header
         title={printId ? 'EDIT PRINT' : 'NEW PRINT'}
         leftAction={<BackButton onClick={goHome} />}
+        rightAction={
+          <IconButton
+            icon={<Settings size={20} />}
+            label="Session settings"
+            onClick={() => goToSessionSetup(sessionId)}
+          />
+        }
       />
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">
@@ -284,9 +318,18 @@ export function PrintEditor() {
 
           return (
             <Card key={strip.id} padding="compact" className="mb-4">
-              <div className="text-text-secondary mb-2">
-                {strip.baseTime}s base &middot; {strip.interval}s interval &middot;{' '}
-                {strip.stripCount} strips
+              <div className="flex justify-between items-start mb-2">
+                <div className="text-text-secondary">
+                  {strip.baseTime}s base &middot; {strip.interval}s interval &middot;{' '}
+                  {strip.stripCount} strips
+                </div>
+                <button
+                  onClick={() => deleteTestStrip(strip.id)}
+                  className="p-1 -m-1 text-text-muted hover:text-text-primary transition-colors"
+                  aria-label="Delete test strip"
+                >
+                  <X size={18} />
+                </button>
               </div>
               <div className="flex gap-1 flex-wrap">
                 {Array.from({ length: strip.stripCount }, (_, i) => i + 1).map(n => (
