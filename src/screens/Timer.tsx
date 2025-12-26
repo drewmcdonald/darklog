@@ -46,14 +46,14 @@ export function Timer() {
 
   if (!session || !print) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center p-6 max-w-[500px] mx-auto w-full">
+      <div className="flex-1 flex flex-col justify-center items-center p-6 max-w-125 mx-auto w-full">
         <div className="text-text-muted">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full">
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 flex flex-col justify-center items-center p-6">
       {timerState.status === 'idle' && (

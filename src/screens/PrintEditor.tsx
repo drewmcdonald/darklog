@@ -132,7 +132,7 @@ export function PrintEditor() {
 
   if (!session || !print) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header title="NEW PRINT" leftAction={<BackButton onClick={goHome} />} />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -147,7 +147,7 @@ export function PrintEditor() {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header title={printId ? 'EDIT PRINT' : 'NEW PRINT'} leftAction={<BackButton onClick={goHome} />} />
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">

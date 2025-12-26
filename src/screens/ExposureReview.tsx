@@ -13,7 +13,7 @@ export function ExposureReview() {
 
   if (!session || !print) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header
           title="EXPOSURE REVIEW"
           leftAction={<BackButton onClick={() => goToPrintEditor(sessionId, printId)} />}
@@ -28,7 +28,7 @@ export function ExposureReview() {
     : `Grade ${print.paper.contrast.grade}`;
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header
         title="EXPOSURE REVIEW"
         leftAction={<BackButton onClick={() => goToPrintEditor(sessionId, printId)} />}

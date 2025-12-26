@@ -125,7 +125,7 @@ export function SessionSetup() {
 
   if (loading || !defaults) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header title="SESSION SETUP" leftAction={<BackButton onClick={goHome} />} />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -133,7 +133,7 @@ export function SessionSetup() {
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header title="SESSION SETUP" leftAction={<BackButton onClick={goHome} />} />
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="mb-4">

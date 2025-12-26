@@ -33,7 +33,7 @@ export function BackButton({ onClick }: BackButtonProps) {
 }
 
 interface IconButtonProps {
-  icon: string;
+  icon: ReactNode;
   label: string;
   onClick: () => void;
 }
@@ -41,7 +41,7 @@ interface IconButtonProps {
 export function IconButton({ icon, label, onClick }: IconButtonProps) {
   return (
     <button
-      className="bg-transparent border-none text-text-secondary text-xl p-2 cursor-pointer min-h-12 min-w-12 flex items-center justify-center hover:text-text-primary"
+      className="bg-transparent border-none text-text-primary text-xl p-2 cursor-pointer min-h-12 min-w-12 flex items-center justify-center hover:text-text-primary transition-colors duration-150"
       onClick={onClick}
       aria-label={label}
     >

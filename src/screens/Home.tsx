@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BookOpen, Settings } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useSessions, createSession, useSessionPrints } from '../hooks';
 import { Header, IconButton, Button, Card } from '../components';
@@ -77,11 +78,11 @@ export function Home() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header
           title="DarkLog"
-          leftAction={<IconButton icon="📚" label="History" onClick={goToHistory} />}
-          rightAction={<IconButton icon="⚙" label="Settings" onClick={goToSettings} />}
+          leftAction={<IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />}
+          rightAction={<IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />}
         />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -89,11 +90,11 @@ export function Home() {
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header
         title="DarkLog"
-        leftAction={<IconButton icon="📚" label="History" onClick={goToHistory} />}
-        rightAction={<IconButton icon="⚙" label="Settings" onClick={goToSettings} />}
+        leftAction={<IconButton icon={<BookOpen size={20} />} label="History" onClick={goToHistory} />}
+        rightAction={<IconButton icon={<Settings size={20} />} label="Settings" onClick={goToSettings} />}
       />
       <div className="flex-1 p-4 overflow-y-auto">
         {todaysSession && (

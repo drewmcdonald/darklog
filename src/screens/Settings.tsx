@@ -10,7 +10,7 @@ export function Settings() {
 
   if (loading || !settings) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header title="SETTINGS" leftAction={<BackButton onClick={goHome} />} />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -18,7 +18,7 @@ export function Settings() {
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header title="SETTINGS" leftAction={<BackButton onClick={goHome} />} />
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="text-sm text-text-muted uppercase tracking-wider mb-4 px-2 flex items-center gap-2 before:content-[''] before:flex-1 before:h-px before:bg-border after:content-[''] after:flex-1 after:h-px after:bg-border">

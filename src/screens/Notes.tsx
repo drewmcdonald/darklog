@@ -42,7 +42,7 @@ export function Notes() {
 
   if (loading || !print) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header title="PRINT COMPLETE" />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -50,7 +50,7 @@ export function Notes() {
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header title="PRINT COMPLETE" />
       <SessionContext sessionId={sessionId} />
       <div className="flex-1 p-4 overflow-y-auto">

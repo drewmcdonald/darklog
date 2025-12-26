@@ -1,8 +1,9 @@
 import { useApp } from '../context/AppContext';
 import { useSessions, useSessionPrints, deleteSession, deletePrint } from '../hooks';
-import { Header, BackButton, Card } from '../components';
+import { Header, BackButton, Card, IconButton } from '../components';
 import { formatFullDate } from '../utils/time';
 import type { Session, PrintRecord } from '../types';
+import { Trash2} from 'lucide-react';
 
 function SessionHistoryCard({
   session,
@@ -54,13 +55,11 @@ function SessionHistoryCard({
         <div className="font-medium">
           {formatFullDate(session.date)}
         </div>
-        <button
+        <IconButton
+          icon={<Trash2 size={16} />}
+          label='Delete session'
           onClick={handleDeleteSession}
-          className="text-text-muted hover:text-text-primary transition-colors px-2 -mt-1"
-          title="Delete session"
-        >
-          ✕
-        </button>
+        />
       </div>
       <div className="text-text-secondary mb-2">
         {session.defaults.paper.name} &middot; {session.defaults.lens}
@@ -79,13 +78,11 @@ function SessionHistoryCard({
                 {p.rollId} #{p.frameNumber} &middot; f/{p.exposure.aperture} &middot; {p.exposure.baseTime}s
                 {p.rating && ` · ${'★'.repeat(p.rating)}`}
               </button>
-              <button
+              <IconButton
+                icon={<Trash2 size={12} />}
+                label='Delete print'
                 onClick={() => handleDeletePrint(p)}
-                className="text-text-muted hover:text-text-primary transition-colors px-2 opacity-0 group-hover:opacity-100"
-                title="Delete print"
-              >
-                ✕
-              </button>
+                />
             </div>
           ))}
           {prints.length > 5 && (
@@ -105,7 +102,7 @@ export function History() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+      <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
         <Header title="Print History" leftAction={<BackButton onClick={goHome} />} />
         <div className="flex-1 p-4 overflow-y-auto text-center text-text-muted">Loading...</div>
       </div>
@@ -113,7 +110,7 @@ export function History() {
   }
 
   return (
-    <div className="flex-1 flex flex-col max-w-[500px] mx-auto w-full md:border-x md:border-border">
+    <div className="flex-1 flex flex-col max-w-125 mx-auto w-full md:border-x md:border-border">
       <Header title="Print History" leftAction={<BackButton onClick={goHome} />} />
       <div className="flex-1 p-4 overflow-y-auto">
         {sessions.length === 0 ? (
