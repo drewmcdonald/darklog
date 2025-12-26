@@ -36,11 +36,11 @@ export function Timer() {
   // Auto-start timer on first load
   const hasAutoStarted = useRef(false);
   useEffect(() => {
-    if (timerState.status === 'idle' && !hasAutoStarted.current) {
+    if (timerState.status === 'idle' && !hasAutoStarted.current && steps.length > 0) {
       hasAutoStarted.current = true;
       start();
     }
-  }, [timerState.status, start]);
+  }, [timerState.status, start, steps.length]);
 
   const progress = totalDuration > 0 ? timerState.totalElapsed / totalDuration : 0;
 
