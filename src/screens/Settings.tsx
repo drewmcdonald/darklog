@@ -56,7 +56,6 @@ export function Settings() {
                 type="checkbox"
                 checked={settings.soundEnabled}
                 onChange={(e) => update({ soundEnabled: e.target.checked })}
-                className="w-6 h-6 accent-accent cursor-pointer"
               />
             </label>
           </div>
@@ -73,7 +72,6 @@ export function Settings() {
                 checked={settings.vibrationEnabled}
                 onChange={(e) => update({ vibrationEnabled: e.target.checked })}
                 disabled={!vibrationSupported}
-                className="w-6 h-6 accent-accent cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </label>
           </div>

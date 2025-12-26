@@ -1,93 +1,144 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #000000;
-  --color-bg-secondary: #0a0a0a;
-  --color-bg-elevated: #1a1a1a;
+    --color-bg-primary: #000000;
+    --color-bg-secondary: #0a0a0a;
+    --color-bg-elevated: #1a1a1a;
 
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #999999;
-  --color-text-muted: #555555;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #999999;
+    --color-text-muted: #555555;
 
-  --color-accent: #ffffff;
-  --color-accent-dim: #444444;
+    --color-accent: #ffffff;
+    --color-accent-dim: #444444;
 
-  --color-success: #ffffff;
-  --color-warning: #999999;
-  --color-error: #ffffff;
+    --color-success: #ffffff;
+    --color-warning: #999999;
+    --color-error: #ffffff;
 
-  --color-border: #333333;
+    --color-border: #333333;
 
-  --font-size-timer: 4rem;
+    --font-size-timer: 4rem;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 button,
 input,
 select,
 textarea {
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0;
+    font-family: inherit;
+    font-size: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 a {
-  color: var(--color-accent);
-  text-decoration: none;
+    color: var(--color-accent);
+    text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  font-weight: 600;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-weight: 600;
 }
 
 p {
-  margin: 0;
+    margin: 0;
+}
+
+/* Custom checkbox styling for visibility in dark mode */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:hover:not(:disabled) {
+    border-color: var(--color-text-secondary);
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid var(--color-bg-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 @media (display-mode: standalone) {
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }
