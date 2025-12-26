@@ -27,7 +27,7 @@ function SessionCard({
     >
       <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">
-          {isToday ? 'Today' : formatDate(session.createdAt)}, {formatDate(session.date)}
+          {isToday ? 'Today' : formatDate(session.date)}
         </div>
         <div className="text-sm text-text-secondary">
           {prints.length} print{prints.length !== 1 ? 's' : ''}
