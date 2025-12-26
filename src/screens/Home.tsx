@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { useSessions, createSession, useSessionPrints } from '../hooks';
 import { Header, IconButton, Button, Card } from '../components';
 import { formatDate } from '../utils/time';
+import { dateString } from '../utils/id';
 import { DEFAULT_SESSION_DEFAULTS } from '../utils/defaults';
 import type { Session } from '../types';
 
@@ -55,7 +56,7 @@ export function Home() {
   const { sessions, loading } = useSessions();
   const [todaysSession, setTodaysSession] = useState<Session | null>(null);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = dateString();
 
   useEffect(() => {
     const found = sessions.find(s => s.date === today);
