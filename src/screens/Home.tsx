@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { useSessions, createSession, useSessionPrints } from '../hooks';
 import { Header, IconButton, Button, Card } from '../components';
 import { formatDate } from '../utils/time';
+import { dateString } from '../utils/id';
 import { DEFAULT_SESSION_DEFAULTS } from '../utils/defaults';
 import type { Session, PrintRecord } from '../types';
 
@@ -27,7 +28,7 @@ function SessionCard({
     >
       <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">
-          {isToday ? 'Today' : formatDate(session.createdAt)}, {formatDate(session.date)}
+          {isToday ? 'Today' : formatDate(session.date)}
         </div>
         <div className="text-sm text-text-secondary">
           {prints.length} print{prints.length !== 1 ? 's' : ''}
@@ -76,7 +77,7 @@ export function Home() {
   const { sessions, loading, refresh: refreshSessions } = useSessions();
   const [todaysSession, setTodaysSession] = useState<Session | null>(null);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = dateString();
 
   // Fetch prints for today's session
   const { prints: todaysPrints, refresh: refreshPrints } = useSessionPrints(todaysSession?.id);
